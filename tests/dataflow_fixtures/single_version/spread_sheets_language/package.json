@@ -1,0 +1,26 @@
+{
+  "name": "@grapecity/spread-sheets-languagepackages",
+  "version": "14.2.6",
+  "main": "index.js",
+  "description":"SpreadJS Calcengine Language Packages plugin",
+  "scripts": {},
+  "keywords": [
+    "spread-sheets-languagepackages",
+    "spreadjs-languagepackages",
+    "languagepackages",
+    "calcengine",
+    "spread",
+    "sheet",
+    "javascript",
+    "excel",
+    "grapecity"
+  ],
+  "dependencies": {
+    "@grapecity/spread-sheets": "14.2.6"
+  },
+  "author": {
+    "email": "us.sales@grapecity.com",
+    "name": "GrapeCity, Inc"
+  },
+  "license": "Commercial"
+}

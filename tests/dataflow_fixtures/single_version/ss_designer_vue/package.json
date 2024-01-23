@@ -1,0 +1,31 @@
+{
+  "name": "@grapecity/spread-sheets-designer-vue",
+  "version": "14.2.6",
+  "main": "index.js",
+  "description":"GrapeCity SpreadJS Designer Vue Wrapper Components.",
+  "scripts": {},
+  "keywords": [
+    "spread-sheets",
+    "javascript spreadsheet",
+    "javascript excel",
+    "excel io",
+    "sheets",
+    "sheet",
+    "designer",
+    "javascript",
+    "excel",
+    "grapecity",
+    "spreadjs",
+    "spreadjs designer",
+    "spreadjs designer vue",
+    "vue"
+  ],
+  "dependencies": { 
+  },
+  "author": {
+    "email": "us.sales@grapecity.com",
+    "name": "GrapeCity, Inc"
+  },
+  "homepage": "https://www.grapecity.com/spreadjs",
+  "license": "Commercial"
+}

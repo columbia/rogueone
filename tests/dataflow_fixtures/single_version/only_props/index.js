@@ -1,0 +1,1 @@
+require('sink').prop = require('source')

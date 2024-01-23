@@ -1,0 +1,12 @@
+{
+  "username": "rogueone",
+  "password": "password",
+  "host": "localhost",
+  "port": "5432",
+  "db": "rogueone",
+  "sample_folder": "/Samples/active_survey",
+  "single_version_folder": "/RogueOneSVDL",
+  "processing_folder": "/RogueOneProcessing",
+  "retro_survey_folder": "/Samples/retro_survey",
+  "redis_backend": "redis://localhost:6379",
+}

@@ -1,0 +1,75 @@
+{% extends 'base.html' %}
+
+{% block scripts %}
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/npm/diff2html/bundles/css/diff2html.min.css" />
+
+<!-- Javascripts -->
+<script type="text/javascript" src="https://cdn.jsdelivr.net/npm/diff2html/bundles/js/diff2html-ui.min.js"></script>
+<script>
+    const diffjson = JSON.parse({{ pair.diff_json | tojson | safe }});
+
+    const configuration = { drawFileList: true, matching: 'lines' };
+    document.addEventListener('DOMContentLoaded', () => {
+        const targetElement = document.getElementById('diff-target');
+        const diff2htmlUi = new Diff2HtmlUI(targetElement, diffjson, configuration);
+        diff2htmlUi.draw()
+    });
+</script>
+{% endblock %}
+
+{% block header %}
+<div class="container"> <h1>{% block title %} {{pair.before.package.name}} {% endblock %}</h1></div>
+{% endblock %}
+
+{% block content %}
+    <div class="container">
+	<div class="row align-items-start">
+        <div id="metadata" class="col">
+            <div> Package: {{pair.before.package.name}}, version {{pair.before.number}} --> {{pair.after.number}}</div>
+            <div> Group: {{pair.group}}</div>
+            <div> Analysis Time: {{analysis_result.run_timestamp}}</div>
+            <div> Update Time: {{pair.after.uploaded_at}}</div>
+            <div> Suspicious: {{analysis_result.suspicious}}</div>
+            <div> Label: {{pair.label}}</div>
+            <div> Human Label: {{pair.human_label}}</div>
+	    <div> CPNR: {{cpnr}}</div>
+	    <div> <a href='https://www.npmjs.com/package/{{pair.before.name_for_npm()}}'>On NPM </a></div>
+	    
+	    
+            <form action="{{url_for('set_label', id=pair.id)}}" method="post">
+                <input type="hidden" name="new_label" value="BEN">
+                <input type="submit" value="Mark as Benign">
+            </form>
+            <form action="{{url_for('set_label', id=pair.id)}}" method="post">
+                <input type="hidden" name="new_label" value="MAL">
+                <input type="submit" value="Mark as Malicious">
+            </form>
+        </div>
+        <div class="col">
+		 <h4> New Trust Relations</h4>
+		 <ul>
+		 {% for k in rel_map %}
+		 <li> {{k}} 
+			 <ul>
+		    {% for locs in rel_map[k][0:4] %}
+		    <li> {{locs}} </li>
+			{% endfor %}
+			 </ul>
+			 {% endfor %}
+		{{analysis_result.json_result['system_extra_info']['new_rels']}}
+	</div>
+	</div>
+        <div id="diff-target">
+		{% if analysis_result.diff_json %}
+			Loading Diff...
+		{% else %}
+			Diff Json not found.
+		{% endif %}
+        </div>
+            <div>Report Text</div>
+            {{analysis_result.json_result }}
+            
+
+        </div>
+    </div>
+{% endblock %}

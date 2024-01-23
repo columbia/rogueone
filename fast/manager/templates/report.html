@@ -1,0 +1,175 @@
+
+{% extends 'base.html' %}
+
+
+{% block content %}
+<div class="container">
+    <h2>{% block title %}Data Summary {% endblock %}</h2>
+
+  <table class="table">
+      <thead>
+      <tr>
+        <th scope="col"> Packages Downloaded </th>
+        <th scope="col"> Pairs Downloaded </th>
+        <th scope="col"> Pairs Analyzed Successfully </th>
+        <th scope="col"> Pairs Analyzed With Graph Components </th>
+        <th scope="col"> Suspicious Pairs </th>
+        <th scope="col"> Suspicious Pairs with over 200 downloads</th>
+      </tr>
+      </thead>
+    <tbody>
+    <tr>
+      <td> {{packages_downloaded}}</td>
+            <td> {{pairs_downloaded}}</td>
+            <td> {{pairs_analyzed}}</td>
+            <td> {{pairs_wcc_nonzero}}</td>
+            <td> {{pairs_sus}}</td>
+	    <td> {{pairs_sus_downloaded}}</td>
+    </tr>
+    </tbody>
+  </table>
+    <h2> Error Summary </h2>
+      <table class="table">
+      <thead>
+      <tr>
+        <th scope="col"> Analysis Error </th>
+        <th scope="col"> Error Count </th>
+      </tr>
+      </thead>
+    <tbody>
+
+        {% for d in pairs_error_types %}
+            <tr>
+                <td> {{d[0]}}</td>
+                <td> {{d[1]}}</td>
+            </tr>
+        {% endfor %}
+
+    </tbody>
+  </table>
+
+    <h2> All Results </h2>
+    <form method="get">
+
+    </form>
+    <div>
+        <select id="filter-field">
+    <option></option>
+            {% for c in col_fields %}
+                        <option> {{c}} </option>
+            {% endfor %}
+
+  </select>
+
+  <select id="filter-type">
+    <option value="=">=</option>
+    <option value="<"><</option>
+    <option value="<="><=</option>
+    <option value=">">></option>
+    <option value=">=">>=</option>
+    <option value="!=">!=</option>
+    <option value="like">like</option>
+  </select>
+
+  <input id="filter-value" type="text" placeholder="value to filter">
+        <button id="filter-add">Add Filter</button>
+  <button id="filter-clear">Clear Filters</button>
+</div>
+
+    <table id="all_data"
+           class="table">
+        <thead>
+        <tr>
+            {% for c in distinct_table_cols %}
+		<th> {{c}} </th>
+            {% endfor %}
+        </tr>
+        </thead>
+        <tbody>
+            {% for r in distinct_results %}
+                <tr>
+                {% for c in distinct_table_cols %}
+                    {% if c == distinct_table_cols[0] %}
+                        <td data-url="{{url_for('view_pair', id=r[-2])}}"> {{ r[0] }},{{r[-2] }} </td>
+                    {% else %}
+                        <td> {{ r[loop.index-1] }} </td>
+                    {% endif %}
+                {% endfor %}
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+<script>
+var fieldEl = document.getElementById("filter-field");
+var typeEl = document.getElementById("filter-type");
+var valueEl = document.getElementById("filter-value");
+
+//Custom filter example
+function customFilter(data){
+    return true;
+}
+
+//Trigger setFilter function with correct parameters
+function updateFilter(){
+  var filterVal = fieldEl.options[fieldEl.selectedIndex].value;
+  var typeVal = typeEl.options[typeEl.selectedIndex].value;
+
+  var filter = filterVal == "function" ? customFilter : filterVal;
+
+  if(filterVal == "function" ){
+    typeEl.disabled = true;
+    valueEl.disabled = true;
+  }else{
+    typeEl.disabled = false;
+    valueEl.disabled = false;
+  }
+
+  if(filterVal){
+    table.setFilter(filter,typeVal, valueEl.value);
+  }
+}
+
+//Update filters on value change
+document.getElementById("filter-field").addEventListener("change", updateFilter);
+document.getElementById("filter-type").addEventListener("change", updateFilter);
+document.getElementById("filter-value").addEventListener("keyup", updateFilter);
+
+//Clear filters on "Clear Filters" button click
+document.getElementById("filter-clear").addEventListener("click", function(){
+  fieldEl.value = "";
+  typeEl.value = "=";
+  valueEl.value = "";
+
+  table.clearFilter();
+});
+    function modAutoColumns(defs){
+        defs[0].formatter=function(cellComponent, params, onRendered){
+            console.log(r)
+            return r
+        };
+        return defs
+    }
+    var cols = [
+        {% for c in distinct_table_cols %}
+{title: "{{c}}", field:"{{ col_fields[loop.index -1] }}" },
+        {% endfor %}
+    ]
+    cols[0].formatter = function (cell, params, onRendered){
+        parts = cell.getInitialValue().split(",")
+        return "<a href='/versionpair/" + parts[1] + "'>" + parts[0] +"</a>"
+    }
+    cols[4].sorter = "date";
+    cols[4].sorterParams = {format:"dd LLL, HH:mm:ss"}
+    table = new Tabulator("#all_data", {
+        height:800,
+        autoColumns: false
+    });
+    
+	table.__proto__.__proto__.on.bind(table)("tableBuilt", () =>{
+			table.setColumns(cols);
+					table.setSort("analysis_time", "desc");
+				});
+</script>
+
+{% endblock %}
