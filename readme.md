@@ -155,32 +155,6 @@ This process will be slow (12 hours with 8 cores and 32GB memory) but can be sto
 It will place tabular data in `rogue_one_mass_analysis.csv`, and complete JSON data in `rogue_one_output.json` in
 each sample folder.
 
-# Capability-Based analysis
-An interface modeled on the CapsLock JSON format is available in the `caps.py` file in the root directory.  
-The goal of this interface is to have a machine-readable, fairly human-readable, and diffable summary of the 
-cross-domain data-flows in a JavaScript package.
-
-## Single Version Capability analysis
-
-RogueOne can be used to generate the capability summary for a Node package as follows:
-```commandline
-python ./caps.py --single tests/dataflow_fixtures/dual_version/jas_authsync/v1
-```
-Add the `--with-deps` option, and RogueOne will also analyze packages present in the `node_modules`
-folder of the target and include the result of that analysis.
-
-```commandline
-python ./caps.py --with-deps --single tests/dataflow_fixtures/with_dependencies/mkdirp
-```
-
-## Update Capability analysis
-
-RogueOne can also be used to generate and compare the capabilities for two versions of a package.
-```commandline
-python ./caps.py --before tests/dataflow_fixtures/dual_version/jas_authsync/v1 --after tests/dataflow_fixtures/dual_version/jas_authsync/v2
-```
-Since a package generally contains many data flows, this is useful for quickly viewing what has changed between two versions. This comparison does not support the `--with-deps` option.
-
 # Caveats
 For practical reasons, RogueOne is an unsound analysis which does not always terminate.
 We describe some major caveats to the use of RogueOne below.
@@ -211,3 +185,29 @@ the abstract interpretation engine to explore an exponentially expanding tree of
 An example of this can be seen in the package `jade`, included at `tests/dataflow_fixtures/dual_version/jade`.
 A two-pass method for avoiding these situations can be seen in https://ieeexplore.ieee.org/document/10179352,
 but enabling these mitigations is experimental in RogueOne (`use_two_pass` branch).
+
+# Capability-Based analysis
+An interface modeled on the CapsLock JSON format is available in the `caps.py` file in the root directory.  This interface is not part of the work described in the RogueOne ICSE 2024 paper, but is a separate effort.
+The goal of this interface is to have a machine-readable, fairly human-readable, and diffable summary of the 
+cross-domain data-flows in a JavaScript package.
+
+## Single Version Capability analysis
+
+RogueOne can be used to generate the capability summary for a Node package as follows:
+```commandline
+python ./caps.py --single tests/dataflow_fixtures/dual_version/jas_authsync/v1
+```
+Add the `--with-deps` option, and RogueOne will also analyze packages present in the `node_modules`
+folder of the target and include the result of that analysis.
+
+```commandline
+python ./caps.py --with-deps --single tests/dataflow_fixtures/with_dependencies/mkdirp
+```
+
+## Update Capability analysis
+
+RogueOne can also be used to generate and compare the capabilities for two versions of a package.
+```commandline
+python ./caps.py --before tests/dataflow_fixtures/dual_version/jas_authsync/v1 --after tests/dataflow_fixtures/dual_version/jas_authsync/v2
+```
+Since a package generally contains many data flows, this is useful for quickly viewing what has changed between two versions. This comparison does not support the `--with-deps` option.
