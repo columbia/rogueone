@@ -269,7 +269,7 @@ def test_file_loader_ben():
     before_tups = td.rels_as_tuples(before_rels)
     after_tups = td.rels_as_tuples(after_rels)
     diff = td.flagged_single_local_rels_from_tuples(before_tups, after_tups)
-    assert diff
+    assert not diff
 
 def test_cc_mal():
     before_idg, before_odg, after_idg, after_odg, scripts = dual_v_idg_main('conventional-changelog_1.1.12-->1.2.0')
