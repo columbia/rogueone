@@ -181,7 +181,7 @@ Showing that this update is rogue.
 
 ## Mass Analysis
 
-To analyze the entire dataset in /RO/Samples, run `python rogue_one_runner.py --sample_folder=/RO/Samples/`.
+To analyze a large dataset in `<folder>`, run `python rogue_one_runner.py --sample_folder=<folder>`.
 This process will be slow (12 hours with 8 cores and 32GB memory) but can be stopped and resumed without losing all data.
 It will place tabular data in `rogue_one_mass_analysis.csv`, and complete JSON data in `rogue_one_output.json` in
 each sample folder.
