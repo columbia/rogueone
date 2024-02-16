@@ -54,11 +54,11 @@ pack-name_0.0.1-->0.0.2/
 
 ## Scanning Single Updates using RogueOne
 
-This version of RogueOne comes with one benign update and one rogue update sample, stored in `/RO/Data`.
+This version of RogueOne comes with a variety of test samples stored in `/RO/tests/dataflow_fixtures`.
 
-We will first experiment with scanning the benign one stored at "Data/file-loader_6.1.1--\>6.2.0/", by running:
+We will first experiment with scanning the benign one stored at "dual_version/file-loader_6.1.1--\>6.2.0/", by running:
 ```bash
- python rogue_one_runner.py --no_redo --log_level WARNING --single /RO/Data/file-loader_6.1.1--\>6.2.0/ 
+ python rogue_one_runner.py --no_redo --log_level WARNING --single /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/ 
 ```
 Note that you must use **absolute paths** as inputs to RogueOne.
 
@@ -81,36 +81,67 @@ Package analysis finished successfully (/RO/Data/file-loader_6.1.1-->6.2.0/file-
 
 The results summary JSON file will be created in the root of the package pair directory. 
 For the `file-loader` example, the JSON result should contain the following fields:
+
+``cat /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/rogue_one_output.json | jq 'del(.system_extra_info)'``
 ```
-"error": "OK",
-"suspicious": false,
-"new_rels": [],
-"before_rels": {
-    "(':caller', ':local:loader')": [
-        [
-            "2315",
-            "2315"
-        ],
-        [
-            "2315",
-            "2319"
-        ]
-    ],
-    <...clipped...>
-}
-"after_rels": {
-    "(':caller', ':local:loader')": [
-        [
-            "2593",
-            "2597"
-        ],
-        [
-            "2593",
-            "2593"
-        ]
-    ],
-    "(':caller', ':local:1')": [
-        [
+{
+  "package_name": "file-loader",
+  "label": "BEN",
+  "group": "dual_version",
+  "system": "rogue_one",
+  "run_timestamp": "2024-02-16 18:15:15.880204",
+  "sinks_added": 0,
+  "sinks_removed": 0,
+  "sinks_changed": 0,
+  "fast_mode": false,
+  "esprima_info": {},
+  "before": {
+    "version": "6.1.1",
+    "folder": "/RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1-->6.2.0/file-loader-6.1.1",
+    "running_time": 3.587908,
+    "weakly_connected_components": 1,
+    "error": "OK",
+    "file_node_nums": {
+      "dist/index.js": 454
+    },
+    "odg_time": "0:00:03.341625",
+    "idg_time": "0:00:00.244198",
+    "graph_size": {
+      "odg": {
+        "nodes": 4571,
+        "edges": 8406
+      },
+      "idg": {
+        "nodes": 1961,
+        "edges": 3552
+      }
+    }
+  },
+  "after": {
+    "version": "6.2.0",
+    "folder": "/RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1-->6.2.0/file-loader-6.2.0",
+    "running_time": 4.697887,
+    "weakly_connected_components": 1,
+    "error": "OK",
+    "file_node_nums": {
+      "dist/utils.js": 175,
+      "dist/index.js": 551
+    },
+    "odg_time": "0:00:04.167507",
+    "idg_time": "0:00:00.529721",
+    "graph_size": {
+      "odg": {
+        "nodes": 7725,
+        "edges": 15126
+      },
+      "idg": {
+        "nodes": 2962,
+        "edges": 5450
+      }
+    }
+  },
+  "error": "OK",
+  "suspicious": false
 }
 ```
 
@@ -118,13 +149,13 @@ The field `"error": "OK"` means that the analysis for the package pair terminate
 
 To view the full JSON file you can use the following command:
 ```bash
-cat /RO/Data/file-loader_6.1.1--\>6.2.0/rogue_one_output.json | python -m json.tool
+cat /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/rogue_one_output.json | python -m json.tool
 ```
 
 
 To analyze the rogue update, run the following command:
 ```bash
-python rogue_one_runner.py --single /host/Data/conventional-changelog_1.1.12--\>1.2.0/ --no_redo --log_level WARNING
+python rogue_one_runner.py --single /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.r.1/ --no_redo --log_level WARNING
 ```
 
 In this case, looking in the JSON file summarizing the results of this analysis should contain the following fields:

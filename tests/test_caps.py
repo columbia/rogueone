@@ -28,13 +28,13 @@ def test_cap_simplest():
         }
 
 def test_file_loader_before():
-    target = Path(dual_v_folder) / 'file-loader_6.1.1-->6.r.1' / 'v1'
+    target = Path(dual_v_folder) / 'file-loader_6.1.1-->6.r.1' / 'file-loader-6.1.1'
     with TemporaryDirectory() as td:
         res = caps.single_version_capabilities(target, td)
     assert  res
 
 def test_file_loader_after():
-    target = Path(dual_v_folder) / 'file-loader_6.1.1-->6.r.1' / 'v2'
+    target = Path(dual_v_folder) / 'file-loader_6.1.1-->6.r.1' / 'file-loader-6.r.1'
     with TemporaryDirectory() as td:
         res = caps.single_version_capabilities(target, td)
     assert  res
@@ -42,7 +42,7 @@ def test_file_loader_after():
 def test_file_loader_dual():
     target = Path(dual_v_folder) / 'file-loader_6.1.1-->6.r.1'
     with TemporaryDirectory() as td:
-        res = caps.dual_version_capabilities(target / 'v1', target / 'v2', td)
+        res = caps.dual_version_capabilities(target / 'file-loader-6.1.1', target / 'file-loader-6.r.1', td)
     assert  res
 
 def test_dep_not_analyzed_single():

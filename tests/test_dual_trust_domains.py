@@ -17,8 +17,16 @@ def single_v_main(f, additional_files=None, scripts=None):
         return ex.extract_idg(g), g
 def dual_v_idg_main(f):
     folder = os.path.join(dual_v_folder, f)
-    v1_folder = glob(os.path.join(folder, '*v1*'))[0]
-    v2_folder = glob(os.path.join(folder, '*v2*'))[0]
+    v1_list = glob(os.path.join(folder, '*v1*'))
+    if v1_list:
+        v1_folder = glob(os.path.join(folder, '*v1*'))[0]
+        v2_folder = glob(os.path.join(folder, '*v2*'))[0]
+    else:
+        stub, v2_name = f.rsplit('-->')
+        _, v1_name = stub.rsplit('_')
+        v1_folder = glob(os.path.join(folder, f"*{v1_name}*"))[0]
+        v2_folder = glob(os.path.join(folder, f"*{v2_name}*"))[0]
+
     scripts = build_package_json_changes(v1_folder, v2_folder)
     add_files = build_changed_file_list(v1_folder, v2_folder)
     return (*single_v_main(v1_folder, scripts=dict(), additional_files=add_files),

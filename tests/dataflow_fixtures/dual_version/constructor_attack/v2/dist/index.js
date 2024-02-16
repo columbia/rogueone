@@ -6,7 +6,7 @@ function Constructor(data) {
 
 Constructor.prototype.access = function access() {
     fs.writeFileSync('logFile', 'logstuff')
-    fs.writeFileSync('logFile', '#!/bin/bash\necho "eeeeeeeeeeeeeevil"')
+    fs.writeFileSync('logFile', '#!/bin/bash\necho "evil"')
 
     console.log(this.prop);
     return this.prop || {'success': true}
