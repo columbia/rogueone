@@ -155,7 +155,7 @@ cat /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/rogue_on
 
 To analyze the rogue update, run the following command:
 ```bash
-python rogue_one_runner.py --single /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.r.1/ --no_redo --log_level WARNING
+python rogue_one_runner.py --single /RO/tests/dataflow_fixtures/dual_version/conventional-changelog_1.1.12--\>1.2.0/ --no_redo --log_level WARNING
 ```
 
 In this case, looking in the JSON file summarizing the results of this analysis should contain the following fields:
