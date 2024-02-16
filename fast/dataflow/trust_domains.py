@@ -370,7 +370,7 @@ def generalize_to_old_locals_rel(rel, old_locals):
 
 def generalize_new_td(td: str) -> str:
     if td.startswith(l_td):
-        return l_td + ":new"
+        return l_td + ":new:" + td.lstrip(l_td)
     else:
         return td
 def generalize_to_new_locals_rel(rel):

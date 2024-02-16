@@ -262,7 +262,14 @@ def test_file_loader():
     after_tups = td.rels_as_tuples(after_rels)
     diff = td.flagged_rels_from_tuples(before_tups, after_tups)
     assert diff
-
+def test_file_loader_ben():
+    before_idg, before_odg, after_idg, after_odg, scripts = dual_v_idg_main('file-loader_6.1.1-->6.2.0')
+    before_rels = td.td_rel_map(before_idg, consolidate_tds=True)
+    after_rels = td.td_rel_map(after_idg, consolidate_tds=True)
+    before_tups = td.rels_as_tuples(before_rels)
+    after_tups = td.rels_as_tuples(after_rels)
+    diff = td.flagged_single_local_rels_from_tuples(before_tups, after_tups)
+    assert diff
 def test_constructor():
     # This test checks whether we can detect a change that uses an exported constructor for an attack
     before_idg, before_odg, after_idg, after_odg, scripts = dual_v_idg_main('constructor_attack')
