@@ -82,7 +82,7 @@ Package analysis finished successfully (/RO/Data/file-loader_6.1.1-->6.2.0/file-
 The results summary JSON file will be created in the root of the package pair directory. 
 For the `file-loader` example, the JSON result should contain the following fields:
 
-``cat /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/rogue_one_output.json | jq 'del(.system_extra_info)'``
+``cat /RO/tests/dataflow_fixtures/dual_version/file-loader_6.1.1--\>6.2.0/rogue_one_output.json | jq 'del(.system_extra_info | .flagged_all_local_distinct, .flagged_new_local_distinct, .before_rels, .after_rels, .before_rel_code_locs, .after_rel_code_locs)'``
 ```
 {
   "package_name": "file-loader",
